@@ -46,6 +46,8 @@ function App() {
   const [secondData, setSecondData] = useState<HandwrittenData[]>([]);
   const [hwProductsData, setHwProductsData] = useState<OcrResponse[]>([]);
 
+
+  console.log(typeof secondData,'secondData')
   const fetchStandardTemplateData = async (file: File) => {
     setIsLoading("pending");
     const headersList = {
@@ -121,9 +123,9 @@ function App() {
       method: "POST",
       body: bodyContent,
     });
-    const d: HandwrittenData[] = await response.json();
+    
+    const d = await response.json();
 
-    console.log(d);
     setIsLoading(() => {
       // const temp = d.map(
       //   ({ material, quantity, Material, Quantity, Confidence }) => ({
@@ -133,7 +135,8 @@ function App() {
       //   })
       // );
       // setSecondData(temp);
-      setSecondData(d);
+      
+      setSecondData(JSON.parse(d));
       setPage("ocr");
       return "success";
     });

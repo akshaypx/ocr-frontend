@@ -67,7 +67,6 @@ const InputPage = ({
     );
   });
 
-  console.log(isHandwritten);
 
   return (
     <div className="w-full">

@@ -60,6 +60,7 @@ export interface HandwrittenData {
   quantity?: string;
   Confidence?: string;
 }
+
 export interface FinalPayload {
   items?: ItemsEntity[] | null;
 }
