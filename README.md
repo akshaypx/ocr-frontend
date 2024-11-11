@@ -1,6 +1,6 @@
 TODO-
-[] Fetch Handwritten ocr data
-[] Display Handwritten ocr Table
-[] Integrate Search Service with Both data
-[] Spruce Integration for Add to cart API
-[] Spruce Integration for Place Order API
+[X] Fetch Handwritten ocr data
+[X] Display Handwritten ocr Table
+[X] Integrate Search Service with Both data
+[X] Spruce Integration for Add to cart API
+[X] Spruce Integration for Place Order API
