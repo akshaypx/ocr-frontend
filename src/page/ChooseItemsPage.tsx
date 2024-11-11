@@ -74,84 +74,86 @@ const ChooseItemsPage = ({
         <div key={productIndex} className="rounded-md bg-gray-200 p-4">
           <p className="font-semibold">Name - {product.name}</p>
           <p className="font-semibold">Quantity - {product.quantity}</p>
-          <div className="flex">
-            {product.search_results?.map((result, resultIndex) => {
-              const isSelected = selectedProducts.some(
-                (p) =>
-                  p.productIndex === productIndex &&
-                  p.resultIndex === resultIndex
-              );
-              const selectedProduct = selectedProducts.find(
-                (p) =>
-                  p.productIndex === productIndex &&
-                  p.resultIndex === resultIndex
-              );
+          <div className="max-w-[1200px] overflow-scroll">
+            <div className="flex w-full">
+              {product.search_results?.map((result, resultIndex) => {
+                const isSelected = selectedProducts.some(
+                  (p) =>
+                    p.productIndex === productIndex &&
+                    p.resultIndex === resultIndex
+                );
+                const selectedProduct = selectedProducts.find(
+                  (p) =>
+                    p.productIndex === productIndex &&
+                    p.resultIndex === resultIndex
+                );
 
-              return (
-                <label
-                  key={resultIndex}
-                  className={`bg-white rounded-md m-2 p-2 min-h-80 cursor-pointer border-2 ${
-                    isSelected ? "border-blue-500" : "border-transparent"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name={`product-${productIndex}`}
-                    className="hidden"
-                    checked={isSelected}
-                    onChange={() => handleSelect(productIndex, resultIndex)}
-                  />
-                  <div className="h-52 w-h-52 object-contain overflow-hidden rounded-md">
-                    <img
-                      src={result.image_link}
-                      height={200}
-                      width={200}
-                      alt={result.name}
+                return (
+                  <label
+                    key={resultIndex}
+                    className={`bg-white rounded-md m-2 p-2 min-h-80 cursor-pointer border-2 ${
+                      isSelected ? "border-blue-500" : "border-transparent"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name={`product-${productIndex}`}
+                      className="hidden"
+                      checked={isSelected}
+                      onChange={() => handleSelect(productIndex, resultIndex)}
                     />
-                  </div>
-                  <p className="font-bold py-2">
-                    {result.name.length > 25
-                      ? result.name.substring(0, 25) + "..."
-                      : result.name}
-                  </p>
-                  <p className="pb-2">
-                    {result.product_code.length > 25
-                      ? result.product_code.substring(0, 25) + "..."
-                      : result.product_code}
-                  </p>
-                  <p className="font-bold text-lg opacity-70">
-                    Rs. {result.price}
-                  </p>
-
-                  {isSelected && (
-                    <div className="flex items-center justify-between mt-4">
-                      <button
-                        className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleQuantityChange(productIndex, resultIndex, -1);
-                        }}
-                        disabled={selectedProduct?.quantity === 1}
-                      >
-                        -
-                      </button>
-                      <span className="font-semibold">
-                        {selectedProduct?.quantity}
-                      </span>
-                      <button
-                        className="bg-[#5edcb6] text-white rounded-full w-6 h-6 flex items-center justify-center"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleQuantityChange(productIndex, resultIndex, 1);
-                        }}
-                      >
-                        +
-                      </button>
+                    <div className="h-40 w-40 object-contain overflow-hidden rounded-md">
+                      <img
+                        src={result.image_link}
+                        height={200}
+                        width={200}
+                        alt={result.name}
+                      />
                     </div>
-                  )}
-                </label>
-              );
-            })}
+                    <p className="font-bold py-2">
+                      {result.product_name.length > 20
+                        ? result.product_name.substring(0, 20) + "..."
+                        : result.product_name}
+                    </p>
+                    <p className="pb-2">
+                      {result.product_code.length > 25
+                        ? result.product_code.substring(0, 25) + "..."
+                        : result.product_code}
+                    </p>
+                    <p className="font-bold text-lg opacity-70">
+                      Rs. {result.price}
+                    </p>
+
+                    {isSelected && (
+                      <div className="flex items-center justify-between mt-4">
+                        <button
+                          className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuantityChange(productIndex, resultIndex, -1);
+                          }}
+                          disabled={selectedProduct?.quantity === 1}
+                        >
+                          -
+                        </button>
+                        <span className="font-semibold">
+                          {selectedProduct?.quantity}
+                        </span>
+                        <button
+                          className="bg-[#5edcb6] text-white rounded-full w-6 h-6 flex items-center justify-center"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuantityChange(productIndex, resultIndex, 1);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    )}
+                  </label>
+                );
+              })}
+            </div>
           </div>
         </div>
       ))}

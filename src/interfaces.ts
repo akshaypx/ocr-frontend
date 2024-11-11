@@ -52,6 +52,7 @@ export interface SearchResultsEntity {
   sub_category_jp: string;
   summary: string;
   summary_jp: string;
+  product_name: string;
 }
 export interface HandwrittenData {
   material?: string;
@@ -65,8 +66,8 @@ export interface FinalPayload {
   items?: ItemsEntity[] | null;
 }
 export interface ItemsEntity {
-  Material: string;
-  Quantity: string;
+  name: string;
+  quantity: string;
 }
 export interface OcrResponse {
   material?: string;

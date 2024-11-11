@@ -7,7 +7,7 @@ import {
   FinalPayload,
   HandwrittenData,
   ItemsEntity,
-  OcrResponse,
+  // OcrResponse,
   ProductsEntity,
   SearchResult,
   SearchResultsEntity,
@@ -18,7 +18,7 @@ import CheckoutPage from "./page/CheckoutPage";
 import ChooseItemsPage from "./page/ChooseItemsPage";
 import CartPage from "./page/CartPage";
 import HandwrittenTable from "./page/HandwrittenTable";
-import HWCart from "./page/HWCart";
+// import HWCart from "./page/HWCart";
 
 interface SelectedProduct {
   productIndex: number;
@@ -44,10 +44,11 @@ function App() {
     []
   );
   const [secondData, setSecondData] = useState<HandwrittenData[]>([]);
-  const [hwProductsData, setHwProductsData] = useState<OcrResponse[]>([]);
+  const [hwProductsData, setHwProductsData] = useState<SearchResult | null>(
+    null
+  );
 
-
-  console.log(typeof secondData,'secondData')
+  console.log(typeof secondData, "secondData");
   const fetchStandardTemplateData = async (file: File) => {
     setIsLoading("pending");
     const headersList = {
@@ -123,7 +124,7 @@ function App() {
       method: "POST",
       body: bodyContent,
     });
-    
+
     const d = await response.json();
 
     setIsLoading(() => {
@@ -135,7 +136,7 @@ function App() {
       //   })
       // );
       // setSecondData(temp);
-      
+
       setSecondData(JSON.parse(d));
       setPage("ocr");
       return "success";
@@ -145,8 +146,8 @@ function App() {
   const transformData = (data: HandwrittenData[]): FinalPayload => {
     // const arr = [98.23, 97.88, 96.94, 97.43, 89.45];
     const items: ItemsEntity[] = data.map((item) => ({
-      Material: item.Material || item.material || "", // Use Material if present, otherwise use material
-      Quantity: item.Quantity || item.quantity || "", // Use Quantity if present, otherwise use quantity
+      name: item.Material || item.material || "", // Use Material if present, otherwise use material
+      quantity: item.Quantity || item.quantity || "", // Use Quantity if present, otherwise use quantity
       // Confidence:
       //   item.Confidence && parseFloat(item.Confidence) > 99
       //     ? (parseFloat(item.Confidence) - Math.random()).toFixed(2)
@@ -168,13 +169,13 @@ function App() {
       // );
       // const requestBody = { items: Array.isArray(items) ? items : [] };
       // console.log("Request body:", requestBody);
-      const url = `http://localhost:8001/test-ocr`;
+      const url = `http://localhost:8000/search`;
       const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(transformedData),
+        body: JSON.stringify({ products: transformedData.items }),
       });
 
       if (res.ok) {
@@ -277,7 +278,12 @@ function App() {
               />
             )}
             {page == "hwcart" && hwProductsData && (
-              <HWCart data={hwProductsData} setData={setHwProductsData} />
+              <ChooseItemsPage
+                setPage={setPage}
+                data={hwProductsData}
+                selectedProducts={selectedProducts}
+                setSelectedProducts={setSelectedProducts}
+              />
             )}
           </main>
         </div>
