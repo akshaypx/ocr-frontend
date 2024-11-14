@@ -19,6 +19,8 @@ import ChooseItemsPage from "./page/ChooseItemsPage";
 import CartPage from "./page/CartPage";
 import HandwrittenTable from "./page/HandwrittenTable";
 import Sidebar from "./components/ui/sidebar/Sidebar";
+import { useDropzone } from "react-dropzone";
+import { apiInstance } from "./utils/constants";
 // import HWCart from "./page/HWCart";
 
 interface SelectedProduct {
@@ -55,39 +57,7 @@ function App() {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const fetchStandardTemplateData = async (file: File) => {
-    setIsLoading("pending");
-    const headersList = {
-      Accept: "*/*",
-      "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-    };
-
-    const bodyContent = new FormData();
-    bodyContent.append("file", file);
-
-    try {
-      const response = await fetch("http://localhost:8000/upload", {
-        method: "POST",
-        body: bodyContent,
-        headers: headersList,
-      });
-      const res = await response.json();
-      const data = JSON.parse(res.result);
-      // console.log(data);
-      setIsLoading(() => {
-        setOcrData(data);
-        setPage("ocr");
-        return "success";
-      });
-      console.log("OCRDATA->", ocrData);
-    } catch (e) {
-      console.log(e);
-      setIsLoading("failed");
-    }
-    finally{
-      setIsLoading('idle')
-    }
-  };
+  
 
   const fetchProducts = async () => {
     try {
@@ -98,7 +68,7 @@ function App() {
       };
       if (ocrData) {
         setIsLoading("pending");
-        const res = await fetch("http://localhost:8000/search", {
+        const res = await fetch(`${apiInstance}/search`, {
           method: "POST",
           body: JSON.stringify({
             products: ocrData.products.map((product) => ({
@@ -123,11 +93,12 @@ function App() {
 
   const fetchHandwrittenData = async (file: string | Blob) => {
     // const url = `http://localhost:8001/send-ocr-image`;
-    const url = `http://localhost:8000/handwritten-ocr-data`;
+    console.log(print)
+    const url = `${apiInstance}/ocr`;
     const bodyContent = new FormData();
     console.log("File ->", file);
     // setLocalImage(file);
-    bodyContent.append("uploaded_file", file); // Use 'uploaded_file' as the key
+    bodyContent.append("file", file); // Use 'uploaded_file' as the key
     setIsLoading("pending");
     const response = await fetch(url, {
       method: "POST",
@@ -178,7 +149,7 @@ function App() {
       // );
       // const requestBody = { items: Array.isArray(items) ? items : [] };
       // console.log("Request body:", requestBody);
-      const url = `http://localhost:8000/search`;
+      const url = `${apiInstance}/search`;
       const res = await fetch(url, {
         method: "POST",
         headers: {
@@ -205,32 +176,9 @@ function App() {
   };
 
   useEffect(() => { }, [ocrData]);
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
-
-  console.log(isLoading)
-  function transformSelectedProducts(
-    selectedProducts: SelectedProduct[],
-    data: ProductsEntity[] | null | undefined
-  ): TransformedProduct[] {
-    if (!data) {
-      // Handle the case where data is null or undefined
-      return [];
-    }
-
-    return selectedProducts.map((product) => {
-      const productData = data[product.productIndex];
-
-      // Handle case where productData or search_results might be null or undefined
-      const resultData = productData?.search_results?.[product.resultIndex];
-
-      return {
-        productName: productData?.name || "Unknown Product",
-        originalQuantity: productData?.quantity || "0",
-        selectedQuantity: product.quantity,
-        selectedResult: resultData,
-      };
-    });
-  }
+  
 
   return (
     <>
@@ -264,13 +212,17 @@ function App() {
                 setSecondData={setSecondData}
                 fetchFinalData={fetchFinalData}
                 isLoading={isLoading}
+                acceptedFiles={acceptedFiles}
+
               />
             )}
             {page == "input" && (
               <InputPage
-                fetchStandardTemplateData={fetchStandardTemplateData}
                 isLoading={isLoading}
                 fetchHandwrittenData={fetchHandwrittenData}
+                acceptedFiles={acceptedFiles}
+                getRootProps={getRootProps}
+                getInputProps={getInputProps}
               />
             )}
             {page == "checkout" && ocrData && (
