@@ -25,34 +25,34 @@ export interface SearchResult {
   products?: ProductsEntity[] | null;
 }
 export interface ProductsEntity {
-  name: string;
-  quantity: string;
+  name?: string;
+  quantity?: string;
   search_results?: SearchResultsEntity[] | null;
 }
 export interface SearchResultsEntity {
-  id: string;
-  version: number;
+  id?: string;
+  version?: number;
   score: number;
-  SOP: string;
-  brand: string;
-  brand_jp: string;
-  description: string;
-  description_jp: string;
-  image_link: string;
-  ingredient_info: string;
-  ingredient_info_jp: string;
-  main_category: string;
-  main_category_jp: string;
-  name: string;
-  name_jp: string;
-  price: number;
+  SOP?: string;
+  brand?: string;
+  brand_jp?: string;
+  description?: string;
+  description_jp?: string;
+  image_link?: string;
+  ingredient_info?: string;
+  ingredient_info_jp?: string;
+  main_category?: string;
+  main_category_jp?: string;
+  name?: string;
+  name_jp?: string;
+  price?: number;
   product_code: string;
-  product_link: string;
-  sub_category: string;
-  sub_category_jp: string;
-  summary: string;
-  summary_jp: string;
-  product_name: string;
+  product_link?: string;
+  sub_category?: string;
+  sub_category_jp?: string;
+  summary?: string;
+  summary_jp?: string;
+  product_name?: string;
 }
 export interface HandwrittenData {
   material?: string;
@@ -85,4 +85,13 @@ export interface SearchProdListEntity {
   score: string;
   selected?: boolean;
   quantity?: number;
+}
+
+
+// types.ts
+
+
+export interface ProductWithQuantity {
+  product: SearchResultsEntity;
+  quantity: number;
 }

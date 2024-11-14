@@ -18,6 +18,7 @@ import CheckoutPage from "./page/CheckoutPage";
 import ChooseItemsPage from "./page/ChooseItemsPage";
 import CartPage from "./page/CartPage";
 import HandwrittenTable from "./page/HandwrittenTable";
+import Sidebar from "./components/ui/sidebar/Sidebar";
 // import HWCart from "./page/HWCart";
 
 interface SelectedProduct {
@@ -33,8 +34,9 @@ interface TransformedProduct {
   selectedResult: SearchResultsEntity | undefined;
 }
 
+
 function App() {
-  const [ocrData, setOcrData] = useState<ClientInfo | null>(null);
+  const [ocrData, setOcrData] = useState<ClientInfo | null>(null);//standard template data
   const [isLoading, setIsLoading] = useState<
     "pending" | "success" | "failed" | "idle"
   >("idle");
@@ -43,12 +45,16 @@ function App() {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
-  const [secondData, setSecondData] = useState<HandwrittenData[]>([]);
+  const [secondData, setSecondData] = useState<HandwrittenData[]>([]);// ocr data
   const [hwProductsData, setHwProductsData] = useState<SearchResult | null>(
     null
   );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  console.log(typeof secondData, "secondData");
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
+
   const fetchStandardTemplateData = async (file: File) => {
     setIsLoading("pending");
     const headersList = {
@@ -77,6 +83,9 @@ function App() {
     } catch (e) {
       console.log(e);
       setIsLoading("failed");
+    }
+    finally{
+      setIsLoading('idle')
     }
   };
 
@@ -195,8 +204,10 @@ function App() {
     }
   };
 
-  useEffect(() => {}, [ocrData]);
+  useEffect(() => { }, [ocrData]);
 
+
+  console.log(isLoading)
   function transformSelectedProducts(
     selectedProducts: SelectedProduct[],
     data: ProductsEntity[] | null | undefined
@@ -223,8 +234,16 @@ function App() {
 
   return (
     <>
-      <div className="min-h-[100vh] max-h-full">
-        <Header />
+      <div className="min-h-[100vh] max-h-full relative overflow-hidden">
+        <Header toggleSidebar={toggleSidebar} />
+        <Sidebar
+          setPage={setPage}
+          setSecondData={setSecondData}
+          setOcrData={setOcrData}
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+
+        />
         <div className="md:flex md:flex-row h-full flex flex-col">
           <aside>
             <Statusbar page={page} />
@@ -244,6 +263,7 @@ function App() {
                 secondData={secondData}
                 setSecondData={setSecondData}
                 fetchFinalData={fetchFinalData}
+                isLoading={isLoading}
               />
             )}
             {page == "input" && (
@@ -265,24 +285,19 @@ function App() {
               <ChooseItemsPage
                 setPage={setPage}
                 data={searchResult}
-                selectedProducts={selectedProducts}
-                setSelectedProducts={setSelectedProducts}
               />
             )}
             {page == "cart" && selectedProducts && (
               <CartPage
-                selectedProducts={transformSelectedProducts(
-                  selectedProducts,
-                  searchResult?.products
-                )}
+                setPage={setPage}
+                setSecondData={setSecondData}
+                setOcrData={setOcrData}
               />
             )}
             {page == "hwcart" && hwProductsData && (
               <ChooseItemsPage
                 setPage={setPage}
                 data={hwProductsData}
-                selectedProducts={selectedProducts}
-                setSelectedProducts={setSelectedProducts}
               />
             )}
           </main>

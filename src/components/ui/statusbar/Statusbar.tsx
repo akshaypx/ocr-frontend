@@ -3,7 +3,7 @@ interface IProps {
 }
 const Statusbar = ({ page }: IProps) => {
   return (
-    <div className="bg-[#13294C] md:min-h-[700px] h-[11vh] md:w-52 w-full text-white md:p-8 md:flex md:flex-row flex flex-col md:gap-4">
+    <div className="bg-[#13294C] min-h-[calc(100vh-80px)] h-full md:w-52 w-full text-white md:p-8 md:flex md:flex-row flex flex-col md:gap-4">
       <div className="md:h-[60vh] h-[10vh] md:flex md:flex-col flex flex-row md:justify-start justify-center items-center md:gap-10 gap-20 text-xs md:text-base p-4">
         <div className="flex justify-center items-start md:h-full">
           <p>OCR Output</p>
