@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 
 import InputPage from "./page/InputPage";
@@ -29,16 +30,15 @@ interface SelectedProduct {
   quantity: number;
 }
 
-interface TransformedProduct {
-  productName: string;
-  originalQuantity: string;
-  selectedQuantity: number;
-  selectedResult: SearchResultsEntity | undefined;
-}
-
+// interface TransformedProduct {
+//   productName: string;
+//   originalQuantity: string;
+//   selectedQuantity: number;
+//   selectedResult: SearchResultsEntity | undefined;
+// }
 
 function App() {
-  const [ocrData, setOcrData] = useState<ClientInfo | null>(null);//standard template data
+  const [ocrData, setOcrData] = useState<ClientInfo | null>(null); //standard template data
   const [isLoading, setIsLoading] = useState<
     "pending" | "success" | "failed" | "idle"
   >("idle");
@@ -47,7 +47,7 @@ function App() {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
-  const [secondData, setSecondData] = useState<HandwrittenData[]>([]);// ocr data
+  const [secondData, setSecondData] = useState<HandwrittenData[]>([]); // ocr data
   const [hwProductsData, setHwProductsData] = useState<SearchResult | null>(
     null
   );
@@ -56,8 +56,6 @@ function App() {
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
-
-  
 
   const fetchProducts = async () => {
     try {
@@ -93,7 +91,7 @@ function App() {
 
   const fetchHandwrittenData = async (file: string | Blob) => {
     // const url = `http://localhost:8001/send-ocr-image`;
-    console.log(print)
+    console.log(print);
     const url = `${apiInstance}/ocr`;
     const bodyContent = new FormData();
     console.log("File ->", file);
@@ -175,10 +173,8 @@ function App() {
     }
   };
 
-  useEffect(() => { }, [ocrData]);
+  useEffect(() => {}, [ocrData]);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-
-  
 
   return (
     <>
@@ -190,7 +186,6 @@ function App() {
           setOcrData={setOcrData}
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
-
         />
         <div className="md:flex md:flex-row h-full flex flex-col">
           <aside>
@@ -213,7 +208,6 @@ function App() {
                 fetchFinalData={fetchFinalData}
                 isLoading={isLoading}
                 acceptedFiles={acceptedFiles}
-
               />
             )}
             {page == "input" && (
@@ -234,10 +228,7 @@ function App() {
               />
             )}
             {page == "products" && (
-              <ChooseItemsPage
-                setPage={setPage}
-                data={searchResult}
-              />
+              <ChooseItemsPage setPage={setPage} data={searchResult} />
             )}
             {page == "cart" && selectedProducts && (
               <CartPage
@@ -247,10 +238,7 @@ function App() {
               />
             )}
             {page == "hwcart" && hwProductsData && (
-              <ChooseItemsPage
-                setPage={setPage}
-                data={hwProductsData}
-              />
+              <ChooseItemsPage setPage={setPage} data={hwProductsData} />
             )}
           </main>
         </div>

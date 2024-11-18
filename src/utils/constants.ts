@@ -1,2 +1,2 @@
-export const currencyRs="USD "
-export const apiInstance="http://13.232.180.47:5000"
+export const currencyRs = "USD ";
+export const apiInstance = "http://3.111.218.26:8000";
