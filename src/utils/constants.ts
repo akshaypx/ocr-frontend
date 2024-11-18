@@ -1,2 +1,2 @@
 export const currencyRs = "USD ";
-export const apiInstance = "http://3.111.218.26:8000";
+export const apiInstance = "http://localhost:8000";

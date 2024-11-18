@@ -1,4 +1,8 @@
-import { DropzoneInputProps, DropzoneRootProps, FileWithPath, useDropzone } from "react-dropzone";
+import {
+  DropzoneInputProps,
+  DropzoneRootProps,
+  FileWithPath,
+} from "react-dropzone";
 import { Document, Page } from "react-pdf";
 import { useState, useEffect } from "react";
 import { pdfjs } from "react-pdf";
@@ -12,7 +16,7 @@ interface IProps {
   fetchHandwrittenData: (file: string | Blob) => Promise<void>;
   acceptedFiles: readonly FileWithPath[];
   getRootProps: <T extends DropzoneRootProps>(props?: T | undefined) => T;
-  getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T
+  getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
 }
 
 const InputPage = ({
@@ -20,10 +24,8 @@ const InputPage = ({
   fetchHandwrittenData,
   acceptedFiles,
   getInputProps,
-  getRootProps
-  
+  getRootProps,
 }: IProps) => {
-  
   const [numPages, setNumPages] = useState<number>(0);
 
   useEffect(() => {
@@ -45,7 +47,13 @@ const InputPage = ({
           <p className="text-sm font-semibold">{file.name}</p>
           <Document file={file} onLoadSuccess={handleDocumentLoadSuccess}>
             {[...Array(numPages).keys()].map((_, i) => (
-              <Page key={i} height={800} pageNumber={i + 1} renderTextLayer={false} renderAnnotationLayer={false} />
+              <Page
+                key={i}
+                height={800}
+                pageNumber={i + 1}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
             ))}
           </Document>
         </div>
@@ -55,7 +63,11 @@ const InputPage = ({
     return (
       <div key={file.name} className="text-center">
         <p className="text-sm font-semibold">{file.name}</p>
-        <img src={URL.createObjectURL(file)} alt="Uploaded file preview" className="h-80" />
+        <img
+          src={URL.createObjectURL(file)}
+          alt="Uploaded file preview"
+          className="h-80"
+        />
       </div>
     );
   };
@@ -79,7 +91,11 @@ const InputPage = ({
           >
             <input {...getInputProps()} />
             <p className="text-gray-400 text-sm flex items-center justify-center gap-4">
-              <img src={UploadIcon} alt="Upload icon" className="h-6 w-6 opacity-40" />
+              <img
+                src={UploadIcon}
+                alt="Upload icon"
+                className="h-6 w-6 opacity-40"
+              />
               Drag &amp; drop files here or click to select files
             </p>
           </div>
@@ -90,10 +106,16 @@ const InputPage = ({
           >
             <input {...getInputProps()} />
             <p className="text-gray-400 text-sm flex items-center justify-center gap-4">
-              <img src={UploadIcon} alt="Upload icon" className="h-6 w-6 opacity-40" />
+              <img
+                src={UploadIcon}
+                alt="Upload icon"
+                className="h-6 w-6 opacity-40"
+              />
               Drag &amp; drop files here or click to select files
             </p>
-            <div className="flex justify-center items-center">{acceptedFiles.map(renderFileContent)}</div>
+            <div className="flex justify-center items-center">
+              {acceptedFiles.map(renderFileContent)}
+            </div>
           </div>
         )}
       </section>

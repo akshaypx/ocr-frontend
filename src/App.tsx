@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 
 import InputPage from "./page/InputPage";
@@ -9,9 +8,7 @@ import {
   HandwrittenData,
   ItemsEntity,
   // OcrResponse,
-  ProductsEntity,
   SearchResult,
-  SearchResultsEntity,
 } from "./interfaces";
 import Header from "./components/ui/header/Header";
 import Statusbar from "./components/ui/statusbar/Statusbar";
@@ -24,7 +21,7 @@ import { useDropzone } from "react-dropzone";
 import { apiInstance } from "./utils/constants";
 // import HWCart from "./page/HWCart";
 
-interface SelectedProduct {
+export interface SelectedProduct {
   productIndex: number;
   resultIndex: number;
   quantity: number;
@@ -235,6 +232,7 @@ function App() {
                 setPage={setPage}
                 setSecondData={setSecondData}
                 setOcrData={setOcrData}
+                setSelectedProducts={setSelectedProducts}
               />
             )}
             {page == "hwcart" && hwProductsData && (
